@@ -1,4 +1,4 @@
-from brian2.units import *
+from brian2.units import ms
 from brian2 import NeuronGroup, Synapses, StateMonitor, run
 import matplotlib.pyplot as plt
 
@@ -7,8 +7,9 @@ dv/dt = (I-v)/tau : 1
 I : 1
 tau : second
 '''
-G = NeuronGroup(2, eqs, threshold='v>0.8', reset='v = 0', method='exact')
-G.I = [1, 0]
+
+G = NeuronGroup(3, eqs, threshold='v>1', reset='v = 0', method='exact')
+G.I = [2, 2, 0]
 G.tau = [10, 100]*ms
 
 # Comment these two lines out to see what happens without Synapses

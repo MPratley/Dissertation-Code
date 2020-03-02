@@ -14,6 +14,5 @@ to pull in deps
 
 to update them
 
-`pip freeze > requirements.txt`
-
-(yes, freeze is generally bad, this should probably be a real deps list.)
+DONT DO `pip freeze > requirements.txt`
+Just add the top level deps you actually intend on installing
