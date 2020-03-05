@@ -12,8 +12,7 @@ class LIF(object):
         self.V_spike = 0.5  # spike delta (V)
         self.tau = self.resistance*self.capacitance  # time constant (msec)
 
-        # This is an extremely basic way of having a neuron take inputs
-        # The contents of the basket are consumed on each round of the simulation.
+        # Double Linking of nodes
         self.inputSynapses:List[Synapse] = []
         self.outputSynapses:List[Synapse] = []
 
@@ -23,6 +22,16 @@ class LIF(object):
 
         self.tau_ref = refractoryPeriod_mS
         self.Vth = threshold_V
+
+    def step(deltaTmS:float):
+        # Something like this boi
+        # for i, t in enumerate(time):
+        #     if t > t_rest:
+        #         Vm[i] = Vm[i-1] + (-Vm[i-1] + I*Rm) / tau_m * dt
+        #     if Vm[i] >= Vth:
+        #         Vm[i] += V_spike
+        #         t_rest = t + tau_ref
+
 
 
 # # setup parameters and state variables
