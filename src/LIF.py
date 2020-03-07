@@ -6,7 +6,7 @@ from Synapse import Synapse
 class LIF(object):
 
     def __init__(self, record:bool = False, startPotential_V:float=0, threshold_V:float=1, refractoryPeriod_mS:int=4):
-        self.simulationTime:float = 0
+        self.simulatedTime:float = 0
         self.resistance = 1  # resistance (kOhm)
         self.capacitance = 10  # capacitance (uF)
         self.V_spike = 0.5  # spike delta (V)
@@ -23,7 +23,11 @@ class LIF(object):
         self.tau_ref = refractoryPeriod_mS
         self.Vth = threshold_V
 
-    def step(deltaTmS:float):
+    def potentialAt(self, simulatedTime:float):
+        print("Unfinished")
+
+    # def step(self, deltaTmS:float):
+    #     print("yeet")
         # Something like this boi
         # for i, t in enumerate(time):
         #     if t > t_rest:
