@@ -24,8 +24,8 @@ class LIF(object):
         self.Vth = threshold_V
 
     def potentialAt(self, simulatedTime:float):
-        print("Unfinished")
-
+        return Synapse.calculateSynapsesOutput(simulatedTime=simulatedTime, synapses=self.inputSynapses)
+        
     # def step(self, deltaTmS:float):
     #     print("yeet")
         # Something like this boi
