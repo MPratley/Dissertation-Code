@@ -31,11 +31,13 @@ for i, t in enumerate(t_arr):
         Vm = Vm + dt*dv_dt(t, Vm)
     v_arr[i] = Vm
 
-fig, (ax1, ax2) = plt.subplots(2, sharex=True)
+fig, (ax1, ax2) = plt.subplots(2, sharex=True, gridspec_kw={'height_ratios': [1, 3]})
 
 ax1.plot(t_arr, s_arr, marker='.', markersize=20, linestyle='none')
 ax1.set(ylabel='Spikes')
 ax1.axis([0,Tmax, 0.5, 1.5])
+ax1.set_yticklabels([])
+ax1.set_yticks([])
 
 ax2.plot(t_arr, v_arr)
 ax2.set(xlabel='time (ms)', ylabel='voltage (mV)')
