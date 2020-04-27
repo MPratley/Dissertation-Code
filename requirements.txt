@@ -4,4 +4,4 @@ numpy==1.18.1
 pylint==2.4.4
 mypy==0.761
 autopep8==1.5
-scipy==1.18.1
+scipy==1.4.1
