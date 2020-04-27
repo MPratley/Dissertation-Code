@@ -2,7 +2,7 @@ from numpy import *
 from pylab import *
 ## setup parameters and state variables
 T = 50 # total time to simulate (msec)
-dt = 0.125 # simulation time step (msec)
+dt = 0.05 # simulation time step (msec)
 time = arange(0, T+dt, dt) # time array
 t_rest = 0 # initial refractory time
 ## LIF properties
@@ -12,7 +12,7 @@ Cm = 10 # capacitance (uF)
 tau_m = Rm*Cm # time constant (msec)
 tau_ref = 4 # refractory period (msec)
 Vth = 1 # spike threshold (V)
-V_spike = 0.5 # spike delta (V)
+V_spike = 0 # spike delta (V)
 ## Input stimulus
 I = 1.5 # input current (A)
 ## iterate over each time step
@@ -27,5 +27,5 @@ plot(time, Vm)
 title('Leaky Integrate-and-Fire Example')
 ylabel('Membrane Potential (V)')
 xlabel('Time (msec)')
-ylim([0,2])
+ylim([-0.5,2])
 show()

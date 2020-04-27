@@ -5,7 +5,7 @@ from Synapse import Synapse
 
 class LIF(object):
 
-    def __init__(self, record:bool = False, startPotential_V:float=0, threshold_V:float=1, refractoryPeriod_mS:int=4):
+    def __init__(self, record:bool = False, startPotential_V:float=0, threshold_V:float=1, output_V:float=0.5, refractoryPeriod_mS:int=4):
         self.simulatedTime:float = 0
         self.resistance = 1  # resistance (kOhm)
         self.capacitance = 10  # capacitance (uF)
