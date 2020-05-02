@@ -5,20 +5,17 @@ from scipy.integrate import solve_ivp
 import matplotlib
 import matplotlib.pyplot as plt
 
+#Possibly worth mentioning or reimplementing
+from collections import deque
+
 # Global Parameters
 T_MAX = 100    # ms - Time to Run
 DT = 0.1        # ms - Time Step
 T_COUNT = int(T_MAX/DT)
 T_ARR = np.linspace(0, T_MAX, T_COUNT)
 
-TAU_S = 10  # Time constant of all synapses
-
-# def exponentialDecay(lif, t_index):
-#     # Get idx of last spike, arb50
-#     t_decay = t_index - 50
-#     # Decay the output I, arb5
-#     return 5 * np.ext(-t_decay/TAU_S)
-
+TAU_S = 8  # Time constant of all synapses
+S_DEL = 15  # Delay in signals
 
 class LIF():
     def __init__(self, v_rest, v_max, R, C, I_ext, I_output, inputs=[]):
@@ -32,7 +29,7 @@ class LIF():
         self.I_output = I_output
 
         # Initial spike time and v_m values
-        self.lastSpike = -1
+        self.last_spikes = deque(maxlen=2)
         self.v_m = v_rest
 
         # Array of input LIFs
@@ -49,27 +46,31 @@ class LIF():
     def getv_m(self, t_index):
         if self.v_m >= self.v_max: 
             self.v_m = self.v_rest
-            self.lastSpike = t_index
+            self.last_spikes.append(t_index)
             self.s_arr[t_index] = 1     # Can be optional: if recording
         self.v_m = self.v_m + DT*self.dv_dt(t_index, self.v_m)
         self.v_arr[t_index] = self.v_m  # Can be optional: if recording
         return self.v_m
 
     def getDecayedOutput(self, t_index):
-        if self.lastSpike == -1: return 0
-        t_decay = (t_index - self.lastSpike) * DT
-        if t_decay > 4*TAU_S: return 0
-        return self.I_output * math.exp(-t_decay/TAU_S)
+        out = 0.0
+        for s_tidx in self.last_spikes:
+            t_decay = (t_index - s_tidx) * DT - S_DEL
+            if t_decay < 0 or t_decay > 4*TAU_S: 
+                continue
+            else: 
+                out += self.I_output * math.exp(-t_decay/TAU_S)
+        return out
 
     def I(self, t_index):
         return functools.reduce(
             lambda acc, y: acc + y.getDecayedOutput(t_index),  # Sum all the decayed outputs
             self.inputs,    # Input list to reduce
-            self.I_ext      # Inital state of accumulator
+            self.I_ext()      # Inital state of accumulator
         )
 
-in_lif  =   LIF(0,  10, 6,  2,  2,  4)
-out_lif =   LIF(0,  10, 6,  2,  0,1,[in_lif])
+in_lif  =   LIF(0,  10, 6,  2,  lambda : 2,  4)
+out_lif =   LIF(0,  10, 6,  2,  lambda : 0,1,[in_lif])
 
 for i in range(T_COUNT):
     print(in_lif.getv_m(i))

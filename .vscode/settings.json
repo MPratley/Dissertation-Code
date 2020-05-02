@@ -22,5 +22,11 @@
         "titleBar.inactiveBackground": "#092a2999",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#092a29"
+    "peacock.color": "#092a29",
+    "spellright.language": [],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex"
+    ],
+    "python.linting.pylintUseMinimalCheckers": false
 }
