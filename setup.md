@@ -6,7 +6,7 @@ sudo apt-get install python3-venv python3-pip
 To make a venv:
 
 ```
-python3 -m venv venv
+python3 -m venv .venv
 ```
 
 To source it

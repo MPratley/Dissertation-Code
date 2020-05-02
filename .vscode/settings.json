@@ -26,8 +26,6 @@
     "peacock.color": "#092a29",
     "spellright.language": [],
     "spellright.documentTypes": [
-        "markdown",
-        "latex"
     ],
     "python.linting.pylintUseMinimalCheckers": false
 }
