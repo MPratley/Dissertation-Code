@@ -7,13 +7,15 @@ import synapse
 import simulation
 
 
-def noisy_input(mean_current: float, sigma_noise: float):
-    return np.random.normal(mean_current, sigma_noise)
+def noise_wrapper(mean_current: float, sigma_noise: float,
+                  floor: float = np.NINF, ceil: float = np.Inf) -> Callable[[], float]:
+    return lambda: max(floor, min(ceil, np.random.normal(mean_current, sigma_noise)))
+
 
 class LIF():
     def __init__(self, sim: simulation.Simulation, v_rest: float, v_max: float, r: float, c: float,
-                 input_current_min: Callable[[], float], input_synapses: List['synapse.Synapse']):
-        self.simulation = sim
+                 input_current_min: Callable[[], float], input_synapses: List['synapse.Synapse'], starting_vm: float = None):
+        self.simulation = sim.register_neuron(self)
         self.v_rest = v_rest
         self.v_max = v_max
         self.tau = r*c
@@ -24,7 +26,9 @@ class LIF():
 
         # Initial spike time and v_m values
         self.last_spikes: MutableSequence = deque(maxlen=2)
-        self.v_m = v_rest
+        self.v_m = max(v_rest, min(v_max,
+                                   (starting_vm if starting_vm else v_rest)
+                                   ))
 
         # Array of input LIFs
         self.inputs = input_synapses
@@ -55,8 +59,9 @@ class LIF():
                 self.v_m = self.v_rest
                 self.last_spikes.append(t_index)
                 self.s_arr[t_index] = 1     # Can be optional: if recording
-            self.v_m = self.v_m + self.simulation.d_t * \
-                self.dv_dt(t_index, self.v_m)
+            self.v_m = self.v_m + \
+                (self.simulation.d_t * self.dv_dt(t_index, self.v_m))
             self.v_arr[t_index] = self.v_m  # Can be optional: if recording
             return self.v_m
-        raise ValueError("too large a jump: {}!".format(t_index-self.t_curr_idx))
+        raise ValueError("too large a jump: {}!".format(
+            t_index-self.t_curr_idx))

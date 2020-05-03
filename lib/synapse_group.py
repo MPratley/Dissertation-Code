@@ -19,11 +19,11 @@ class SynapseGroup():
 
         self.synapses: List[synapse.Synapse] = []
 
-        for pre_n in pre:
-            for post_n in post:
+        for pre_n in pre.neurons:
+            for post_n in post.neurons:
                 if np.random.uniform() < probConnection:
                     syn = synapse.Synapse(
-                        sim, pre_n, tau_s(), delay_MS(), current_floor(), weight())
+                        sim, pre_n, post_n, tau_s(), delay_MS(), current_floor(), weight())
                     self.synapses.append(syn)
                     post_n.inputs.append(syn)
     
