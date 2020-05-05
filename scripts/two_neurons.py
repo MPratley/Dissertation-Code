@@ -8,12 +8,10 @@ from synapse import Synapse
 # out_lif =   LIF(0,  10, 6,  2,  lambda : 0,1,[in_lif])
 sim = Simulation(200, 2000)
 in_lif = LIF(sim, 0, 10, 6, 2, lambda: 2, [])
-syn = Synapse(sim,in_lif,8,0,4)
-out_lif = LIF(sim, 0, 10, 6, 2, lambda: 0, [syn])
+out_lif = LIF(sim, 0, 10, 6, 2, lambda: 0, [])
+syn = Synapse(sim, in_lif, out_lif, 8, 0, 4, 1)
 
-for i in range(sim.t_itmax):
-    print(in_lif.getv_m(i))
-    print(out_lif.getv_m(i))
+sim.run_simulation()
 
 print(in_lif.v_arr)
 print(out_lif.v_arr)
@@ -41,12 +39,9 @@ plt.show()
 
 sim = Simulation(200, 2000)
 in_lif = LIF(sim, 0, 10, 6, 2, lambda: 2, [])
-syn = Synapse(sim,in_lif,8,5,4)
-out_lif = LIF(sim, 0, 10, 6, 2, lambda: 0, [syn])
-
-for i in range(sim.t_itmax):
-    print(in_lif.getv_m(i))
-    print(out_lif.getv_m(i))
+out_lif = LIF(sim, 0, 10, 6, 2, lambda: 0, [])
+syn = Synapse(sim, in_lif, out_lif, 8, 5, 4, 1)
+sim.run_simulation()
 
 print(in_lif.v_arr)
 print(out_lif.v_arr)

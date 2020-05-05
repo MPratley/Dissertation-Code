@@ -10,6 +10,7 @@ class Synapse():
         self.simulation = sim.register_synapse(self)
         self.pre = pre
         self.post = post
+        post.inputs.append(self)
         self.weight = weight
         self.tau_s = tau_s
         self.delay = delay_MS
@@ -54,10 +55,10 @@ class Synapse():
                 stdp = self.stdp(delta_t)
                 if stdp > 0:
                     # Times learning rate if I choose to have one
-                    w_delta += stdp * (self.stdp_weight_max - self.weight)
+                    w_delta += self.simulation.d_t * stdp * (self.stdp_weight_max - self.weight)
                 else:
                     # Same as above
-                    w_delta += stdp * (self.weight - self.stdp_weight_min)
+                    w_delta += self.simulation.d_t * stdp * (self.weight - self.stdp_weight_min)
         self.weight = max(self.stdp_weight_min, min(
             self.stdp_weight_max, self.weight+w_delta)) # Clamp the weight
 

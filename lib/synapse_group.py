@@ -25,5 +25,4 @@ class SynapseGroup():
                     syn = synapse.Synapse(
                         sim, pre_n, post_n, tau_s(), delay_MS(), current_floor(), weight())
                     self.synapses.append(syn)
-                    post_n.inputs.append(syn)
     
