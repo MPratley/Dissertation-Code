@@ -49,8 +49,9 @@ class LIF():
     def dv_dt(self, t_index, potential):
         return (-potential + self.v_rest + self.resistance*self.input_current(t_index))/self.tau
 
-    # SIDE-EFFECTS - this is not a thread safe implementation
+    # SIDE-EFFECTS - this is not a thread safe implementation as other objects may or may not be edited
     def getv_m(self, t_index):
+        # Each neuron tracks its current t_index, ie. the time it has been simulated till.
         if self.t_curr_idx == t_index:
             return self.v_m
         if self.t_curr_idx + 1 == t_index:
@@ -63,5 +64,6 @@ class LIF():
                 (self.simulation.d_t * self.dv_dt(t_index, self.v_m))
             self.v_arr[t_index] = self.v_m  # Can be optional: if recording
             return self.v_m
+        # Currently all t_index increases larger than 1 are illeagal, for simplicity when reasoning with the simulation
         raise ValueError("too large a jump: {}!".format(
             t_index-self.t_curr_idx))
