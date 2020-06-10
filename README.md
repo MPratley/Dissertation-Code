@@ -6,6 +6,8 @@
 
 The various `.p` files at the root of the repository are `pickled` results files, that were saved in order to separate the process of generating results to analysing them. 
 
+[The instructions for setting up the project can be found in setup.md](./setup.md)
+
 # TODO
  - Remove pickle files and get the results and graphs into a easily repeatable state.
  - Add a "pickle" directory that caches results by parameter.
